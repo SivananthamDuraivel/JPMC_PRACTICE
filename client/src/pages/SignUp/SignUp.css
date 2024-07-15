@@ -1,0 +1,19 @@
+.signUpPage{
+    display: flex;
+    margin-top: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+.SignUpContainer{
+    width: 500px;
+    height: 500px;
+    display: flex;
+}
+.SignUpFields{
+    flex: 3;
+    border: 2px solid;
+}
+.SignUpBoard{
+    flex: 2;
+    border: 2px  solid;
+}

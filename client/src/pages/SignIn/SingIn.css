@@ -1,0 +1,19 @@
+.signInPage{
+    display: flex;
+    margin-top: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+.signInContainer{
+    width: 500px;
+    height: 500px;
+    display: flex;
+}
+.signInFields{
+    flex: 3;
+    border: 2px solid;
+}
+.SignInBoard{
+    flex: 2;
+    border: 2px  solid;
+}
