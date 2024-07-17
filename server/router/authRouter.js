@@ -1,12 +1,12 @@
-const express =require('express')
-const router=express.Router()
 
-const {signUp,signIn,getFeature}=require('../controller/authController')
-const {withAuthentication} =require('../middleware')
+const express = require('express');
+const router = express.Router();
 
-router.post('/signUp',signUp)
-router.post('/signIn',signIn)
-router.post('/feature',withAuthentication,getFeature)
+const { signUp, signIn, getFeature } = require('../controller/authController');
+const { withAuth } = require('../middleware');
 
-module.exports=router
+router.post('/signUp', signUp);
+router.post('/signIn', signIn);
+router.post('/feature', withAuth, getFeature);
 
+module.exports = router;

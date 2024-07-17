@@ -42,7 +42,7 @@ const SignIn = () => {
             <input type="email" name="" id="userName" onChange={(e) => setEmail(e.target.value)} />
             <br /><br />
             <label htmlFor="">Password</label><br />
-            <input type="password" name="" id="password" onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" name="" id="password" onChange={(e) => setPassword(e.target.value)} autoComplete='off' />
             <br /><br />
             <button onClick={(e)=>handleSubmit(e)} >SignIn</button>
 

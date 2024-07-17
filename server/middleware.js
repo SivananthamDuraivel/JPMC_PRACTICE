@@ -1,28 +1,23 @@
-const jwt=require('jsonwebtoken')
-const cookieParser=require('cookie-parser')
+const jwt = require('jsonwebtoken');
 
-const express=require('express')
-const app=express()
-app.use(cookieParser())
+const secret = process.env.KEY;
 
-const secretKey=process.env.KEY
-
-const withAuthentication = async (req,res,next)=>{
-    console.log("entered midd")
-    const token = req.cookie.token;  //cookie.<name> :- that we gave during creation
-    if(!token)
-        return 
-    try{
-        const user = await jwt.verify(token,secretKey)
-        req.email=user.email  //for making further accessing of DB
-        console.log("email added to req")
-        next()
+const withAuth = async (req, res, next) => {
+  try {
+    console.log("reached middleware");
+    const token = req.cookies.mytoken;
+    console.log("from middleware: ", token);
+    if (!token) {
+      return res.json('no token');
     }
-    catch(err)
-    {
-        console.log(err);
-        return 
-    }
-}
+    const decoded = await jwt.verify(token, secret);
+    req.email = decoded.email;
+    console.log(req.email);
+    next();
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    return res.json('invalid token');
+  }
+};
 
-module.exports={withAuthentication}
+module.exports = { withAuth };
