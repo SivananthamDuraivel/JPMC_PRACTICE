@@ -43,8 +43,8 @@ const signIn = async (req, res) => {
 
         const passwordMatch = await bcrypt.compare(password, existingUser.password);
 
-        const token = jwt.sign({ email: email }, process.env.KEY, { expiresIn: '30m' });
-        res.cookie('token', token, { httpOnly: true, maxAge: 1800000 }); // 30 minutes
+        const token = jwt.sign({username:user.username},process.env.KEY,{expiresIn:'1h'})
+        res.cookie('token',token,{httpOnly:true,maxAge:3600000})
         // 18 00 000 ms = 30 minutes
         
         //By setting httpOnly: true, the cookie cannot be accessed via JavaScript 

@@ -2,11 +2,11 @@ const express =require('express')
 const router=express.Router()
 
 const {signUp,signIn,getFeature}=require('../controller/authController')
-const authenticator =require('../middleware')
+const {withAuthentication} =require('../middleware')
 
 router.post('/signUp',signUp)
 router.post('/signIn',signIn)
-router.post('/feature',authenticator,getFeature)
+router.post('/feature',withAuthentication,getFeature)
 
 module.exports=router
 

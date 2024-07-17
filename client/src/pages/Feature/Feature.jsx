@@ -6,7 +6,7 @@ const Feature = () => {
 
   useEffect(() => {
     const getFeature = () => {
-      axios.defaults.withCredentials = true;
+      axios.defaults.withCredentials = true; 
       axios.post("http://localhost:4080/auth/feature")
         .then(res => {
           if (res && res.data) {
@@ -23,10 +23,8 @@ const Feature = () => {
 
   return (
     <div>
-    
-          <h1>Email: {userData.email}</h1>
-          <h2>Password: {userData.password}</h2>
-  
+      <h1>Email: {userData.email}</h1>
+      <h2>Password: {userData.password}</h2>
     </div>
   );
 }
