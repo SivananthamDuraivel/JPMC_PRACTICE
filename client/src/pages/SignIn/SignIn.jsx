@@ -22,7 +22,7 @@ const SignIn = () => {
       console.log(res.data)
       if(res.data==="valid")
       {
-        navigate("/feature")
+        navigate("/landing2")
         console.log("moving from signin")
       }
       else
