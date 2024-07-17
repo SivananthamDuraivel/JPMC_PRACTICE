@@ -12,12 +12,14 @@ const withAuth = async (req, res, next) => {
     }
     const decoded = await jwt.verify(token, secret);
     req.email = decoded.email;
-    console.log(req.email);
+    req.role  = decoded.role;
+    console.log(req.email+":::"+req.role);
     next();
   } catch (error) {
     console.error("Error verifying token:", error);
     return res.json('invalid token');
   }
 };
+
 
 module.exports = { withAuth };

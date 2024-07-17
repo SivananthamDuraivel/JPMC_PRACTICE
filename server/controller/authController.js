@@ -38,7 +38,7 @@ const signIn = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
 
     if (passwordMatch) {
-      const token = jwt.sign({ email: existingUser.email }, process.env.KEY, { expiresIn: '1h' });
+      const token = jwt.sign({ email: existingUser.email,role:existingUser.role}, process.env.KEY, { expiresIn: '1h' });
       res.cookie('mytoken', token, { httpOnly: true, maxAge: 3600000 });
       console.log("token", token);
       return res.status(200).json("valid");
@@ -68,4 +68,24 @@ const getFeature = async (req, res) => {
   }
 };
 
-module.exports = { signUp, signIn, getFeature };
+const adminFeature = async (req, res) => {
+  try {
+    
+    console.log(req.role)
+    if(req.role!=="admin")
+      return res.json("You aren't an admin")
+
+    const users = await userModel.find({})
+    console.log(users)
+    if (users && users.length>0) {
+      return res.json(users);
+    } else {
+      return res.status(404).json("No data found");
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Internal server error");
+  }
+};
+
+module.exports = { signUp, signIn, getFeature ,adminFeature };
