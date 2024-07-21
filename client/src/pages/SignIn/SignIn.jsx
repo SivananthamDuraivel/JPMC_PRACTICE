@@ -3,8 +3,11 @@ import axios from 'axios'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SingIn.css'
+import {useUserContext} from '../Context/UserContext'
 
 const SignIn = () => {
+
+  const {user,setUser}=useUserContext()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,10 +22,12 @@ const SignIn = () => {
     
     axios.post("http://localhost:4080/auth/signIn",{email,password})
     .then(res=>{
-      console.log(res.data)
-      if(res.data==="valid")
+      // console.log(res)
+      if(res.data.response==="valid")
       {
-        navigate("/landing2")
+        setUser(res.data.user)
+        // console.log("context user : ",user)
+        navigate("/chatHome")
         console.log("moving from signin")
       }
       else

@@ -1,0 +1,10 @@
+
+.chatHomeContainer{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.titleBar{
+    display: flex;
+    justify-content: space-between;
+}
