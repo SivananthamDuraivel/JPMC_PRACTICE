@@ -1,51 +1,77 @@
-import React from 'react'
-import axios from 'axios'
-import { useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './SignUp.css'
+import './SignUp.css';
 
 const SignUp = () => {
-
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");  
-  const [errorMsg,setErrorMsg]=useState("")
-  const navigate=useNavigate()
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [profile, setProfile] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit=(e)=>{
-    e.preventDefault()
-    axios.post("http://localhost:4080/auth/signUp",{email,password,confirmPassword})
-    .then(res=>{
-      console.log(res.data) 
-      if(res.data==="added")
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    let imgUrl=""
+    try {
+      
+      if(profile)
       {
-        navigate("/signIn")
-        console.log("moving to signIn page")
+        const data = new FormData();
+        data.append("file", profile);
+        data.append("upload_preset", "chatApp");
+        data.append("cloud_name", "deid8tlfv");
+
+        axios.defaults.withCredentials = false;
+        const uploadResponse = await axios.post("https://api.cloudinary.com/v1_1/deid8tlfv/image/upload", data);
+
+        imgUrl = uploadResponse.data.url;
+        console.log("URL : ",imgUrl)
       }
-      else
-        setErrorMsg(res.data)
-    })
-    .catch(err=>{
-      console.log(err)
-    })
-  }
+
+      const signUpResponse = await axios.post("http://localhost:4080/auth/signUp", {
+        name,
+        email,
+        password,
+        confirmPassword,
+        imgUrl
+      });
+
+      if (signUpResponse.data === "added") {
+        navigate("/signIn");
+      } else {
+        setErrorMsg(signUpResponse.data);
+      }
+    } catch (error) {
+      console.error("Error during signup", error);
+      setErrorMsg("An error occurred during signup");
+    }
+  };
 
   return (
     <div className='signUpPage'>
       <div className="SignUpContainer">
         <div className='SignUpFields'>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="">Email</label><br />
-            <input type="email" name="" id="userName" onChange={(e) => setEmail(e.target.value)} />
+          <form onSubmit={handleSignUp}>
+            <label>Name</label><br />
+            <input type="text" onChange={(e) => setName(e.target.value)} />
             <br /><br />
-            <label htmlFor="">Password</label><br />
-            <input type="password" name="" id="password" onChange={(e) => setPassword(e.target.value)} />
+            <label>Email</label><br />
+            <input type="email" onChange={(e) => setEmail(e.target.value)} />
             <br /><br />
-            <label htmlFor="">Confirm Password</label><br />
-            <input type="password" name="" id="confirmPassword" onChange={(e) => setConfirmPassword(e.target.value)} />
+            <label>Password</label><br />
+            <input type="password" onChange={(e) => setPassword(e.target.value)} autoComplete='off' />
+            <br /><br />
+            <label>Confirm Password</label><br />
+            <input type="password" onChange={(e) => setConfirmPassword(e.target.value)} autoComplete='off' />
+            <br /><br />
+            <label>Profile Picture</label><br />
+            <input type="file" onChange={(e) => setProfile(e.target.files[0])} />
             <br /><br />
             <button type='submit'>SignUp</button>
-            {(errorMsg.length>0)?<p style={{color:'red'}}>{errorMsg}</p>:null}
+            {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
           </form>
         </div>
         <div className='SignUpBoard'>
@@ -53,7 +79,7 @@ const SignUp = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

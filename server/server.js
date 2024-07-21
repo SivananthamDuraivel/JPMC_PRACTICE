@@ -18,12 +18,15 @@ app.use(cors({
 const authRouter = require('./router/authRouter');
 app.use('/auth', authRouter);
 
+const chatRouter =require('./router/chatRouter')
+app.use('/chat',chatRouter)
+  
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
-  app.listen(process.env.PORT, () => {
+  app.listen(process.env.PORT,() => {
     console.log(`DB connected and server listening at PORT: ${process.env.PORT}`);
   });
 })
 .catch(err => {
-  console.log(err);
+  console.log("DB error : ",err);
 });
